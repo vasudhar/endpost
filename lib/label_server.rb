@@ -55,6 +55,8 @@ module LabelServer
         <ToAddress1>#{args[:to][:address]}</ToAddress1>
         <ToCity>#{args[:to][:city]}</ToCity>
         <ToState>#{args[:to][:state]}</ToState>
+        <ToCountry>#{args[:to][:country]}</ToCountry>
+        <ToCountryCode>#{args[:to][:country_code]}</ToCountryCode>
         <ToPostalCode>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[0] : ''}</ToPostalCode>
         <ToZIP4>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[1] : ''}</ToZIP4>
         <ToPhone>#{args[:to][:phone]}</ToPhone>
@@ -64,6 +66,12 @@ module LabelServer
         <FromState>#{args[:from][:state]}</FromState>
         <FromPostalCode>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[0] : ''}</FromPostalCode>
         <FromZIP4>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[1] : ''}</FromZIP4>
+        <FromPhone>#{args[:from][:phone]}</FromPhone>
+        <CustomsCountry1>#{args[:customs][:country1]}</CustomsCountry1>
+        <CustomsDescription1>#{args[:customs][:description1]}</CustomsDescription1>
+        <CustomsQuantity1>#{args[:customs][:quantity1]}</CustomsQuantity1>
+        <CustomsValue1>#{args[:customs][:value1]}</Customsvalue1>
+        <CustomsWeight1>#{args[:customs][:weight1]}</CustomsWeight1>
       </LabelRequest>!
 
     begin
