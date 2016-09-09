@@ -67,11 +67,11 @@ module LabelServer
         <FromPostalCode>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[0] : ''}</FromPostalCode>
         <FromZIP4>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[1] : ''}</FromZIP4>
         <FromPhone>#{args[:from][:phone]}</FromPhone>
-        <CustomsCountry1>#{args[:customs][:country1]}</CustomsCountry1>
-        <CustomsDescription1>#{args[:customs][:description1]}</CustomsDescription1>
-        <CustomsQuantity1>#{args[:customs][:quantity1]}</CustomsQuantity1>
-        <CustomsValue1>#{args[:customs][:value1]}</Customsvalue1>
-        <CustomsWeight1>#{args[:customs][:weight1]}</CustomsWeight1>
+        <CustomsCountry1>#{args[:customs_country1]}</CustomsCountry1>
+        <CustomsDescription1>#{args[:customs_description1]}</CustomsDescription1>
+        <CustomsQuantity1>#{args[:customs_quantity1]}</CustomsQuantity1>
+        <CustomsValue1>#{args[:customs_value1]}</Customsvalue1>
+        <CustomsWeight1>#{args[:customs_weight1]}</CustomsWeight1>
       </LabelRequest>!
 
     begin
