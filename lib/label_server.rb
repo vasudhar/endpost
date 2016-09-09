@@ -114,7 +114,7 @@ module LabelServer
         <ToState>#{args[:to][:state]}</ToState>
         <ToCountry>#{args[:to][:country]}</ToCountry>
         <ToCountryCode>#{args[:to][:country_code]}</ToCountryCode>
-        <ToPostalCode>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[0] : ''}</ToPostalCode>
+        <ToPostalCode>#{args[:to][:postalcode] ? args[:to][:postalcode].split('-')[0] : ''}</ToPostalCode>
         <ToZIP4>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[1] : ''}</ToZIP4>
         <ToPhone>#{args[:to][:phone]}</ToPhone>
         <FromName>#{args[:from][:full_name]}</FromName>
@@ -127,11 +127,12 @@ module LabelServer
         <CustomsCountry1>#{args[:customs][:country1]}</CustomsCountry1>
         <CustomsDescription1>#{args[:customs][:description1]}</CustomsDescription1>
         <CustomsQuantity1>#{args[:customs][:quantity1]}</CustomsQuantity1>
-        <CustomsValue1>#{args[:customs][:value1]}</Customsvalue1>
+        <CustomsValue1>#{args[:customs][:value1]}</CustomsValue1>
         <CustomsWeight1>#{args[:customs][:weight1]}</CustomsWeight1>
       </LabelRequest>!
 
     begin
+      binding.pry
       response = RestClient.post "#{base_url}/GetPostageLabelXML", :labelRequestXML => xml
 
       response_xml = Nokogiri::XML(response.body)
