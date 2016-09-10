@@ -92,7 +92,17 @@ module LabelServer
     end
   end
 
-  def get_postage_label_international(args)
+  def get_international_postage_label(args)
+    customs_info = ""
+    args[:customs].each_with_index do |custom, i|
+      customs_info += %!
+        <CustomsDescription#{i+1}>#{custom[:description]}</CustomsDescription#{i+1}>
+        <CustomsQuantity#{i+1}>#{custom[:quantity]}</CustomsQuantity#{i+1}>
+        <CustomsValue#{i+1}>#{custom[:value]}</CustomsValue#{i+1}>
+        <CustomsWeight#{i+1}>#{custom[:weight]}</CustomsWeight#{i+1}>!
+
+    end
+
     xml = %!
       <LabelRequest Test="#{test ? 'YES' : 'NO'}" LabelType="Default" ImageFormat="PDF" LabelSize="4x6">
         <RequesterID>#{requester_id}</RequesterID>
@@ -112,27 +122,21 @@ module LabelServer
         <ToAddress1>#{args[:to][:address]}</ToAddress1>
         <ToCity>#{args[:to][:city]}</ToCity>
         <ToState>#{args[:to][:state]}</ToState>
-        <ToCountry>#{args[:to][:country]}</ToCountry>
-        <ToCountryCode>#{args[:to][:country_code]}</ToCountryCode>
-        <ToPostalCode>#{args[:to][:postalcode] ? args[:to][:postalcode].split('-')[0] : ''}</ToPostalCode>
+        <ToPostalCode>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[0] : ''}</ToPostalCode>
         <ToZIP4>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[1] : ''}</ToZIP4>
         <ToPhone>#{args[:to][:phone]}</ToPhone>
+        <ToCountry>#{args[:to][:country]}</ToCountry>
+        <FromPhone>#{args[:from][:phone]}</FromPhone>
         <FromName>#{args[:from][:full_name]}</FromName>
         <ReturnAddress1>#{args[:from][:address]}</ReturnAddress1>
         <FromCity>#{args[:from][:city]}</FromCity>
         <FromState>#{args[:from][:state]}</FromState>
         <FromPostalCode>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[0] : ''}</FromPostalCode>
         <FromZIP4>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[1] : ''}</FromZIP4>
-        <FromPhone>#{args[:from][:phone]}</FromPhone>
-        <CustomsCountry1>#{args[:customs][:country1]}</CustomsCountry1>
-        <CustomsDescription1>#{args[:customs][:description1]}</CustomsDescription1>
-        <CustomsQuantity1>#{args[:customs][:quantity1]}</CustomsQuantity1>
-        <CustomsValue1>#{args[:customs][:value1]}</CustomsValue1>
-        <CustomsWeight1>#{args[:customs][:weight1]}</CustomsWeight1>
+        #{customs_info}
       </LabelRequest>!
 
     begin
-      binding.pry
       response = RestClient.post "#{base_url}/GetPostageLabelXML", :labelRequestXML => xml
 
       response_xml = Nokogiri::XML(response.body)
@@ -157,6 +161,7 @@ module LabelServer
       fail e.to_s
     end
   end
+
 
 
 
