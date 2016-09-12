@@ -81,10 +81,14 @@ module LabelServer
 
       label_node_xml = response_xml.css('LabelRequestResponse Base64LabelImage').first
       tracking_number_node_xml = response_xml.css('LabelRequestResponse TrackingNumber').first
+      final_postage_node_xml = response_xml.css('LabelRequestResponse FinalPostage').first
+      transaction_id_node_xml = response_xml.css('LabelRequestResponse TransactionID').first
 
       return {
           :label => Base64.decode64(label_node_xml.text),
-          :tracking_number => tracking_number_node_xml.text
+          :tracking_number => tracking_number_node_xml.text,
+          :final_postage => final_postage_node_xml.text,
+          :transaction_id => transaction_id_node_xml.text
       }
 
     rescue => e
@@ -151,10 +155,14 @@ module LabelServer
 
       label_node_xml = response_xml.css('LabelRequestResponse Base64LabelImage').first
       tracking_number_node_xml = response_xml.css('LabelRequestResponse TrackingNumber').first
+      final_postage_node_xml = response_xml.css('LabelRequestResponse FinalPostage').first
+      transaction_id_node_xml = response_xml.css('LabelRequestResponse TransactionID').first
 
       return {
           :label => Base64.decode64(label_node_xml.text),
-          :tracking_number => tracking_number_node_xml.text
+          :tracking_number => tracking_number_node_xml.text,
+          :final_postage => final_postage_node_xml.text,
+          :transaction_id => transaction_id_node_xml.text
       }
 
     rescue => e
