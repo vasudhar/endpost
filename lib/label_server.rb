@@ -7,7 +7,7 @@ module LabelServer
   attr_accessor :test, :requester_id, :account_id, :password
 
   def base_url
-    test ? SANDBOX_BASE_URL : SANDBOX_BASE_URL
+    test ? SANDBOX_BASE_URL : PRODUCTION_BASE_URL
   end
 
   def change_pass_phrase(old_password, new_password)
