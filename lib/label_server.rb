@@ -148,7 +148,7 @@ module LabelServer
           <NonDeliveryOption>#{:non_delivery_option}</NonDeliveryOption>
           <EelPfc>#{:eel_pfc}</EelPfc>
         </CustomsInfo>
-        #{customs_data}
+        #{customs_info}
       </LabelRequest>!
 
     begin
