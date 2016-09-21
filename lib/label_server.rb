@@ -100,7 +100,7 @@ module LabelServer
     customs_info = ""
     args[:customs].each_with_index do |custom, i|
       customs_data += %!
-        <CustomsCountry#{i+1}>#{custom[:value]}</CustomsCountry#{i+1}>
+        <CustomsCountry#{i+1}>#{custom[:country]}</CustomsCountry#{i+1}>
         <CustomsDescription#{i+1}>#{custom[:description]}</CustomsDescription#{i+1}>
         <CustomsQuantity#{i+1}>#{custom[:quantity]}</CustomsQuantity#{i+1}>
         <CustomsValue#{i+1}>#{custom[:value]}</CustomsValue#{i+1}>
