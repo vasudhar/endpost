@@ -99,7 +99,7 @@ module LabelServer
   def get_international_postage_label(args)
     customs_info = ""
     args[:customs].each_with_index do |custom, i|
-      customs_data += %!
+      customs_info += %!
         <CustomsCountry#{i+1}>#{custom[:country]}</CustomsCountry#{i+1}>
         <CustomsDescription#{i+1}>#{custom[:description]}</CustomsDescription#{i+1}>
         <CustomsQuantity#{i+1}>#{custom[:quantity]}</CustomsQuantity#{i+1}>
