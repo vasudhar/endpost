@@ -138,7 +138,6 @@ module LabelServer
         <FromState>#{args[:from][:state]}</FromState>
         <FromPostalCode>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[0] : ''}</FromPostalCode>
         <FromZIP4>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[1] : ''}</FromZIP4>
-        <CustomsCertify>#{:customs_certify}</CustomsCertify>
         <CustomsSigner>#{:customs_signer}</CustomsSigner>
         <CustomsInfo>
           <ContentsType>#{args[:contents_type]}</ContentsType>
