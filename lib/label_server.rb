@@ -99,7 +99,8 @@ module LabelServer
   def get_international_postage_label(args)
     customs_info = ""
     args[:customs].each_with_index do |custom, i|
-      customs_info += %!
+      customs_data += %!
+        <CustomsCountry#{i+1}>#{custom[:value]}</CustomsCountry#{i+1}>
         <CustomsDescription#{i+1}>#{custom[:description]}</CustomsDescription#{i+1}>
         <CustomsQuantity#{i+1}>#{custom[:quantity]}</CustomsQuantity#{i+1}>
         <CustomsValue#{i+1}>#{custom[:value]}</CustomsValue#{i+1}>
@@ -137,7 +138,17 @@ module LabelServer
         <FromState>#{args[:from][:state]}</FromState>
         <FromPostalCode>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[0] : ''}</FromPostalCode>
         <FromZIP4>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[1] : ''}</FromZIP4>
-        #{customs_info}
+        <CustomsCertify>#{:customs_certify}</CustomsCertify>
+        <CustomsSigner>#{:customs_signer}</CustomsSigner>
+        <CustomsInfo>
+          <ContentsType>#{args[:contents_type]}</ContentsType>
+          <ContentsExplanation>#{[:contents_explanation]}</ContentsExplanation>
+          <RestrictionType>#{[:restriction_type]}</RestrictionType>
+          <RestrictionComments>#{:restriction_comments}</RestrictionComments>
+          <NonDeliveryOption>#{:non_delivery_option}</NonDeliveryOption>
+          <EelPfc>#{:eel_pfc}</EelPfc>
+        </CustomsInfo>
+        #{customs_data}
       </LabelRequest>!
 
     begin
