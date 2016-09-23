@@ -109,7 +109,7 @@ module LabelServer
     end
 
     xml = %!
-      <LabelRequest Test="NO" LabelType="Default" ImageFormat="PNGMONOCHROME" LabelSize="4x6">
+      <LabelRequest Test="NO" LabelType="Default" ImageFormat="PDF" LabelSize="4x6">
         <RequesterID>#{requester_id}</RequesterID>
         <AccountID>#{account_id}</AccountID>
         <PassPhrase>#{password}</PassPhrase>
