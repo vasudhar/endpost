@@ -98,6 +98,7 @@ module LabelServer
 
   def get_international_postage_label(args)
     customs_info = ""
+    usps_countries = ['Australia', 'Belgium','Canada','Crotia','Estonia','Finland','France','Germany','Great Britain and Northern Ireland','Hungary','Israel','Latvia','Lebanon','Lithuania','Malaysia','Malta','Netherlands','New Zealand','Norway','Singapore','Slovak Republic','Spain','Switzerland','Turkey']
     args[:customs].each_with_index do |custom, i|
       customs_info += %!
         <CustomsCountry#{i+1}>#{custom[:country]}</CustomsCountry#{i+1}>
@@ -118,7 +119,7 @@ module LabelServer
         <SortType>#{args[:sort_type]}</SortType>
         <DateAdvance>0</DateAdvance>
         <WeightOz>#{args[:weight]}</WeightOz>
-        <Services DeliveryConfirmation="ON" SignatureConfirmation="OFF"/>
+        <Services DeliveryConfirmation= "#{usps_countries.include?(args[:to][:country]) ? "ON" : "OFF"}" SignatureConfirmation="OFF"/>
         <ReferenceID>#{args[:order_number]}</ReferenceID>
         <PartnerCustomerID>1</PartnerCustomerID>
         <PartnerTransactionID>1</PartnerTransactionID>
