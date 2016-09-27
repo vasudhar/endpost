@@ -125,7 +125,8 @@ module LabelServer
         <PartnerTransactionID>1</PartnerTransactionID>
         <ToName>#{args[:to][:full_name]}</ToName>
         <ToCompany>#{args[:to][:company]}</ToCompany>
-        <ToAddress1>#{args[:to][:address]}</ToAddress1>
+        <ToAddress1>#{args[:to][:address1]}</ToAddress1>
+        <ToAddress2>#{args[:to][:address2]}</ToAddress2>
         <ToCity>#{args[:to][:city]}</ToCity>
         <ToState>#{args[:to][:state]}</ToState>
         <ToPostalCode>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[0] : ''}</ToPostalCode>
