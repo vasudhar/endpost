@@ -129,7 +129,7 @@ module LabelServer
         <ToAddress2>#{args[:to][:address2]}</ToAddress2>
         <ToCity>#{args[:to][:city]}</ToCity>
         <ToState>#{args[:to][:state]}</ToState>
-        <ToPostalCode>#{args[:to][:postalcode] ? args[:to][:postalcode].split('-')[0] : ''}</ToPostalCode>
+        <ToPostalCode>#{args[:to][:postalcode] ? args[:to][:postalcode] : ''}</ToPostalCode>
         <ToZIP4>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[1] : ''}</ToZIP4>
         <ToPhone>#{args[:to][:phone]}</ToPhone>
         <ToCountry>#{args[:to][:country]}</ToCountry>
