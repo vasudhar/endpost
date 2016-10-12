@@ -119,7 +119,7 @@ module LabelServer
         <SortType>#{args[:sort_type]}</SortType>
         <DateAdvance>0</DateAdvance>
         <WeightOz>#{args[:weight]}</WeightOz>
-        <Services DeliveryConfirmation= "#{usps_countries.include?(args[:to][:country]) and args[:mail_class] == "FirstClassPackageInternationalService" ? "ON" : "OFF"}" SignatureConfirmation="OFF"/>
+        <Services DeliveryConfirmation= "#{(usps_countries.include?(args[:to][:country])) && (args[:mail_class] == "FirstClassPackageInternationalService") ? "ON" : "OFF"}" SignatureConfirmation="OFF"/>
         <ReferenceID>#{args[:order_number]}</ReferenceID>
         <PartnerCustomerID>1</PartnerCustomerID>
         <PartnerTransactionID>1</PartnerTransactionID>
