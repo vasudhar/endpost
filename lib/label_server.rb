@@ -180,7 +180,7 @@ module LabelServer
       transaction_id_node_xml = response_xml.css('LabelRequestResponse TransactionID').first
 
       return {
-          :label => Base64.decode64(label_node_xml.text),
+          # :label => Base64.decode64(label_node_xml.text),
           :tracking_number => tracking_number_node_xml.text,
           :final_postage => final_postage_node_xml.text,
           :transaction_id => transaction_id_node_xml.text
