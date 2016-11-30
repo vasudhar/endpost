@@ -97,7 +97,6 @@ module LabelServer
   end
 
   def get_international_postage_label(args)
-    customs_info = ""
     usps_countries = ['Australia', 'Belgium','Canada','Crotia','Estonia','Finland','France','Germany','Great Britain and Northern Ireland','Hungary','Israel','Latvia','Lebanon','Lithuania','Malaysia','Malta','Netherlands','New Zealand','Norway','Singapore','Slovak Republic','Spain','Switzerland','Turkey']
     # args[:customs].each_with_index do |custom, i|
     #   customs_info += %!
@@ -144,10 +143,10 @@ module LabelServer
         <CustomsInfo>
           <ContentsType>#{args[:contents_type]}</ContentsType>
           <ContentsExplanation>#{[:contents_explanation]}</ContentsExplanation>
-          <RestrictionType>none</RestrictionType>
+          <RestrictionType>"none"</RestrictionType>
           <RestrictionComments>#{:restriction_comments}</RestrictionComments>
-          <NonDeliveryOption>abandon</NonDeliveryOption>
-          <EelPfc>NOEEI 30.37(a)</EelPfc>
+          <NonDeliveryOption>"abandon"</NonDeliveryOption>
+          <EelPfc>"NOEEI 30.37(a)"</EelPfc>
           <CustomsItems>
             <CustomsItem>
              <Description>jhgdjsa</Description>
