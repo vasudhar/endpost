@@ -97,6 +97,7 @@ module LabelServer
   end
 
   def get_international_postage_label(args)
+    #customs_info = ""
     usps_countries = ['Australia', 'Belgium','Canada','Crotia','Estonia','Finland','France','Germany','Great Britain and Northern Ireland','Hungary','Israel','Latvia','Lebanon','Lithuania','Malaysia','Malta','Netherlands','New Zealand','Norway','Singapore','Slovak Republic','Spain','Switzerland','Turkey']
     # args[:customs].each_with_index do |custom, i|
     #   customs_info += %!
@@ -110,49 +111,54 @@ module LabelServer
 
     xml = %!
       <LabelRequest Test="NO" LabelType="International" LabelSubtype="Integrated" ImageFormat="PNGMONOCHROME" LabelSize="4x6">
-          <RequesterID>lxxx</RequesterID>
-        <AccountID>2509525</AccountID>
-        <PassPhrase>vasudhar56</PassPhrase>
-        <MailClass>PriorityMailInternational</MailClass>
-        <MailpieceShape>Parcel</MailpieceShape>
-        <WeightOz>16</WeightOz>
-        <Services DeliveryConfirmation="OFF" SignatureConfirmation="OFF"/>
+        <RequesterID>#{requester_id}</RequesterID>
+        <AccountID>#{account_id}</AccountID>
+        <PassPhrase>#{password}</PassPhrase>
+        <MailClass>#{args[:mail_class]}</MailClass>
+        <MailpieceShape>#{args[:mailpiece_shape]}</MailpieceShape>
+        <SortType>#{args[:sort_type]}</SortType>
+        <DateAdvance>0</DateAdvance>
+        <WeightOz>#{args[:weight]}</WeightOz>
+        <Services DeliveryConfirmation= "#{(usps_countries.include?(args[:to][:country])) && (args[:mail_class] == "FirstClassPackageInternationalService") ? "ON" : "OFF"}" SignatureConfirmation="OFF"/>
+        <PartnerCustomerID>1</PartnerCustomerID>
         <PartnerTransactionID>1</PartnerTransactionID>
-        <ToName>Troy Fernandez</ToName>
-        <ToCompany>USPS</ToCompany>
-        <ToAddress1>164 Dauphin B</ToAddress1>
-         <ToAddress2></ToAddress2>
-        <ToCity>Montreal</ToCity>
-        <ToState>QC</ToState>
-        <ToCountry>Canada</ToCountry>
-        <ToCountryCode>CA</ToCountryCode>
-        <ToPostalCode>H9G 1W3</ToPostalCode>
-        <ToZIP4></ToZIP4>
-        <FromName>Merch Direct</FromName>
-        <ReturnAddress1>54 Drexel Dr</ReturnAddress1>
-        <FromCity>Bayshore</FromCity>
-        <FromState>NY</FromState>
-        <FromCountry>US</FromCountry>
-        <FromPostalCode>11706</FromPostalCode>
-        <FromPhone>2018842179</FromPhone>
-        <FromEmail>vasudharsai7@gmail.com</FromEmail>
+        <ToName>#{args[:to][:full_name]}</ToName>
+        <ToCompany>#{args[:to][:company]}</ToCompany>
+        <ToAddress1>#{args[:to][:address1]}</ToAddress1>
+        <ToAddress2>#{args[:to][:address2]}</ToAddress2>
+        <ToCity>#{args[:to][:city]}</ToCity>
+        <ToState>#{args[:to][:state]}</ToState>
+       <ToPostalCode>#{args[:to][:postalcode] ? args[:to][:postalcode] : ''}</ToPostalCode>
+        <ToZIP4>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[1] : ''}</ToZIP4>
+        <ToPhone>#{args[:to][:phone]}</ToPhone>
+        <ToCountry>#{args[:to][:country]}</ToCountry>
+        <ToCountryCode>#{args[:to][:country_code]}</ToCountryCode>
+        <FromPhone>#{args[:from][:phone]}</FromPhone>
+        <FromName>#{args[:from][:full_name]}</FromName>
+        <ReturnAddress1>#{args[:from][:address]}</ReturnAddress1>
+        <FromCity>#{args[:from][:city]}</FromCity>
+        <FromState>#{args[:from][:state]}</FromState>
+        <FromPostalCode>#{args[:from][:zipcode] ? args[:from][:zipcode] : ''}</FromPostalCode>
+        <FromZIP4>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[1] : ''}</FromZIP4>
+        <CustomsSigner>#{:customs_signer}</CustomsSigner>
         <CustomsInfo>
-          <ContentsType>gift</ContentsType>
-
+          <ContentsType>#{args[:contents_type]}</ContentsType>
+          <ContentsExplanation>#{[:contents_explanation]}</ContentsExplanation>
           <RestrictionType>none</RestrictionType>
-
+          <RestrictionComments>#{:restriction_comments}</RestrictionComments>
           <NonDeliveryOption>abandon</NonDeliveryOption>
           <EelPfc>NOEEI 30.37(a)</EelPfc>
           <CustomsItems>
-          	<CustomsItem>
-             <Description>jasgjhsagdj</Description>
+            <CustomsItem>
+             <Description>jhgdjsa</Description>
              <Quantity>1</Quantity>
+             <Weight>5</Weight>
              <Value>500</Value>
-             <Weight>3</Weight>
              <CountryOfOrigin>US</CountryOfOrigin>
             </CustomsItem>
           </CustomsItems>
         </CustomsInfo>
+
       </LabelRequest>!
 
     begin
