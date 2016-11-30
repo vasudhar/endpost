@@ -119,8 +119,7 @@ module LabelServer
         <SortType>#{args[:sort_type]}</SortType>
         <DateAdvance>0</DateAdvance>
         <WeightOz>#{args[:weight]}</WeightOz>
-        <Services DeliveryConfirmation= "#{usps_countries.include?(args[:to][:country]) ? "ON" : "OFF"}" SignatureConfirmation="OFF"/>
-        <ReferenceID>#{args[:order_number]}</ReferenceID>
+        <Services DeliveryConfirmation= "#{(usps_countries.include?(args[:to][:country])) && (args[:mail_class] == "FirstClassPackageInternationalService") ? "ON" : "OFF"}" SignatureConfirmation="OFF"/>
         <PartnerCustomerID>1</PartnerCustomerID>
         <PartnerTransactionID>1</PartnerTransactionID>
         <ToName>#{args[:to][:full_name]}</ToName>
@@ -129,17 +128,16 @@ module LabelServer
         <ToAddress2>#{args[:to][:address2]}</ToAddress2>
         <ToCity>#{args[:to][:city]}</ToCity>
         <ToState>#{args[:to][:state]}</ToState>
-        <ToPostalCode>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[0] : ''}</ToPostalCode>
+       <ToPostalCode>#{args[:to][:postalcode] ? args[:to][:postalcode] : ''}</ToPostalCode>
         <ToZIP4>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[1] : ''}</ToZIP4>
         <ToPhone>#{args[:to][:phone]}</ToPhone>
         <ToCountry>#{args[:to][:country]}</ToCountry>
-        <ToCountryCode>#{args[:to][:country_code]}</ToCountryCode>
         <FromPhone>#{args[:from][:phone]}</FromPhone>
         <FromName>#{args[:from][:full_name]}</FromName>
         <ReturnAddress1>#{args[:from][:address]}</ReturnAddress1>
         <FromCity>#{args[:from][:city]}</FromCity>
         <FromState>#{args[:from][:state]}</FromState>
-        <FromPostalCode>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[0] : ''}</FromPostalCode>
+        <FromPostalCode>#{args[:from][:zipcode] ? args[:from][:zipcode] : ''}</FromPostalCode>
         <FromZIP4>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[1] : ''}</FromZIP4>
         <CustomsSigner>#{:customs_signer}</CustomsSigner>
         <CustomsInfo>
