@@ -164,7 +164,7 @@ module LabelServer
         fail endicia_response_message
       end
 
-      label_node_xml = response_xml.xpath('//GetPostageLabelResponse/LabelRequestResponse/Label/Image[@PartNumber = "1"]').first
+      label_node_xml = response_xml.xpath('//LabelRequestResponse/Base64LabelImage[@PartNumber = "1"]').first
       tracking_number_node_xml = response_xml.css('LabelRequestResponse TrackingNumber').first
       final_postage_node_xml = response_xml.css('LabelRequestResponse FinalPostage').first
       transaction_id_node_xml = response_xml.css('LabelRequestResponse TransactionID').first
