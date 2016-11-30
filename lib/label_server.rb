@@ -97,20 +97,20 @@ module LabelServer
   end
 
   def get_international_postage_label(args)
-    #customs_info = ""
+    customs_info = ""
     usps_countries = ['Australia', 'Belgium','Canada','Crotia','Estonia','Finland','France','Germany','Great Britain and Northern Ireland','Hungary','Israel','Latvia','Lebanon','Lithuania','Malaysia','Malta','Netherlands','New Zealand','Norway','Singapore','Slovak Republic','Spain','Switzerland','Turkey']
-    # args[:customs].each_with_index do |custom, i|
-    #   customs_info += %!
-    #     <CustomsCountry#{i+1}>#{custom[:country]}</CustomsCountry#{i+1}>
-    #     <CustomsDescription#{i+1}>#{custom[:description]}</CustomsDescription#{i+1}>
-    #     <CustomsQuantity#{i+1}>#{custom[:quantity]}</CustomsQuantity#{i+1}>
-    #     <CustomsValue#{i+1}>#{custom[:value]}</CustomsValue#{i+1}>
-    #     <CustomsWeight#{i+1}>#{custom[:weight]}</CustomsWeight#{i+1}>!
-    #
-    # end
+    args[:customs].each_with_index do |custom, i|
+      customs_info += %!
+        <CustomsCountry#{i+1}>#{custom[:country]}</CustomsCountry#{i+1}>
+        <CustomsDescription#{i+1}>#{custom[:description]}</CustomsDescription#{i+1}>
+        <CustomsQuantity#{i+1}>#{custom[:quantity]}</CustomsQuantity#{i+1}>
+        <CustomsValue#{i+1}>#{custom[:value]}</CustomsValue#{i+1}>
+        <CustomsWeight#{i+1}>#{custom[:weight]}</CustomsWeight#{i+1}>!
+
+    end
 
     xml = %!
-      <LabelRequest Test="NO" LabelType="International" LabelSubtype="Integrated" ImageFormat="PNGMONOCHROME" LabelSize="4x6">
+      <LabelRequest Test="NO" LabelType="Default" ImageFormat="PNGMONOCHROME" LabelSize="4x6">
         <RequesterID>#{requester_id}</RequesterID>
         <AccountID>#{account_id}</AccountID>
         <PassPhrase>#{password}</PassPhrase>
@@ -119,7 +119,8 @@ module LabelServer
         <SortType>#{args[:sort_type]}</SortType>
         <DateAdvance>0</DateAdvance>
         <WeightOz>#{args[:weight]}</WeightOz>
-        <Services DeliveryConfirmation= "#{(usps_countries.include?(args[:to][:country])) && (args[:mail_class] == "FirstClassPackageInternationalService") ? "ON" : "OFF"}" SignatureConfirmation="OFF"/>
+        <Services DeliveryConfirmation= "#{usps_countries.include?(args[:to][:country]) ? "ON" : "OFF"}" SignatureConfirmation="OFF"/>
+        <ReferenceID>#{args[:order_number]}</ReferenceID>
         <PartnerCustomerID>1</PartnerCustomerID>
         <PartnerTransactionID>1</PartnerTransactionID>
         <ToName>#{args[:to][:full_name]}</ToName>
@@ -128,7 +129,7 @@ module LabelServer
         <ToAddress2>#{args[:to][:address2]}</ToAddress2>
         <ToCity>#{args[:to][:city]}</ToCity>
         <ToState>#{args[:to][:state]}</ToState>
-       <ToPostalCode>#{args[:to][:postalcode] ? args[:to][:postalcode] : ''}</ToPostalCode>
+        <ToPostalCode>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[0] : ''}</ToPostalCode>
         <ToZIP4>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[1] : ''}</ToZIP4>
         <ToPhone>#{args[:to][:phone]}</ToPhone>
         <ToCountry>#{args[:to][:country]}</ToCountry>
@@ -138,27 +139,18 @@ module LabelServer
         <ReturnAddress1>#{args[:from][:address]}</ReturnAddress1>
         <FromCity>#{args[:from][:city]}</FromCity>
         <FromState>#{args[:from][:state]}</FromState>
-        <FromPostalCode>#{args[:from][:zipcode] ? args[:from][:zipcode] : ''}</FromPostalCode>
+        <FromPostalCode>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[0] : ''}</FromPostalCode>
         <FromZIP4>#{args[:from][:zipcode] ? args[:from][:zipcode].split('-')[1] : ''}</FromZIP4>
         <CustomsSigner>#{:customs_signer}</CustomsSigner>
         <CustomsInfo>
           <ContentsType>#{args[:contents_type]}</ContentsType>
           <ContentsExplanation>#{[:contents_explanation]}</ContentsExplanation>
-          <RestrictionType>none</RestrictionType>
+          <RestrictionType>#{[:restriction_type]}</RestrictionType>
           <RestrictionComments>#{:restriction_comments}</RestrictionComments>
-          <NonDeliveryOption>abandon</NonDeliveryOption>
-          <EelPfc>NOEEI 30.37(a)</EelPfc>
-          <CustomsItems>
-            <CustomsItem>
-             <Description>jhgdjsa</Description>
-             <Quantity>1</Quantity>
-             <Weight>5</Weight>
-             <Value>500</Value>
-             <CountryOfOrigin>US</CountryOfOrigin>
-            </CustomsItem>
-          </CustomsItems>
+          <NonDeliveryOption>#{:non_delivery_option}</NonDeliveryOption>
+          <EelPfc>#{:eel_pfc}</EelPfc>
         </CustomsInfo>
-
+        #{customs_info}
       </LabelRequest>!
 
     begin
@@ -180,7 +172,7 @@ module LabelServer
       transaction_id_node_xml = response_xml.css('LabelRequestResponse TransactionID').first
 
       return {
-          # :label => Base64.decode64(label_node_xml.text),
+          :label => Base64.decode64(label_node_xml.text),
           :tracking_number => tracking_number_node_xml.text,
           :final_postage => final_postage_node_xml.text,
           :transaction_id => transaction_id_node_xml.text
