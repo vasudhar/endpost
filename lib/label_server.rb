@@ -110,7 +110,7 @@ module LabelServer
     end
 
     xml = %!
-      <LabelRequest Test="NO" LabelType="Default" ImageFormat="PNGMONOCHROME" LabelSize="4x6">
+      <LabelRequest Test="NO" LabelType="International" ImageFormat="PNGMONOCHROME" LabelSize="4x6">
         <RequesterID>#{requester_id}</RequesterID>
         <AccountID>#{account_id}</AccountID>
         <PassPhrase>#{password}</PassPhrase>
@@ -163,8 +163,7 @@ module LabelServer
         endicia_response_message = error_message_node_xml ? error_message_node_xml.text : 'Unknown error'
         fail endicia_response_message
       end
-
-      label_node_xml = response_xml.css("LabelRequestResponse Base64LabelImage[PartNumber='1']").first
+      label_node_xml = response_xml.css("LabelRequestResponse Image").first
       tracking_number_node_xml = response_xml.css('LabelRequestResponse TrackingNumber').first
       final_postage_node_xml = response_xml.css('LabelRequestResponse FinalPostage').first
       transaction_id_node_xml = response_xml.css('LabelRequestResponse TransactionID').first
