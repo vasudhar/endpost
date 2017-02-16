@@ -116,6 +116,7 @@ module LabelServer
         <PassPhrase>#{password}</PassPhrase>
         <MailClass>#{args[:mail_class]}</MailClass>
         <MailpieceShape>#{args[:mailpiece_shape]}</MailpieceShape>
+        <ReferenceID>#{args[:reference]} </ReferenceID>
         <SortType>#{args[:sort_type]}</SortType>
         <DateAdvance>0</DateAdvance>
         <WeightOz>#{args[:weight]}</WeightOz>
@@ -132,6 +133,7 @@ module LabelServer
         <ToZIP4>#{args[:to][:zipcode] ? args[:to][:zipcode].split('-')[1] : ''}</ToZIP4>
         <ToPhone>#{args[:to][:phone]}</ToPhone>
         <ToCountry>#{args[:to][:country]}</ToCountry>
+        <ToCountryCode>#{args[:to][:country_code]}</ToCountryCode>
         <FromPhone>#{args[:from][:phone]}</FromPhone>
         <FromName>#{args[:from][:full_name]}</FromName>
         <ReturnAddress1>#{args[:from][:address]}</ReturnAddress1>
@@ -142,11 +144,11 @@ module LabelServer
         <CustomsSigner>#{:customs_signer}</CustomsSigner>
         <CustomsInfo>
           <ContentsType>#{args[:contents_type]}</ContentsType>
-          <ContentsExplanation>#{[:contents_explanation]}</ContentsExplanation>
-          <RestrictionType>#{[:restriction_type]}</RestrictionType>
-          <RestrictionComments>#{:restriction_comments}</RestrictionComments>
-          <NonDeliveryOption>#{:non_delivery_option}</NonDeliveryOption>
-          <EelPfc>#{:eel_pfc}</EelPfc>
+          <ContentsExplanation>#{args[:contents_explanation]}</ContentsExplanation>
+          <RestrictionType>#{args[:restriction_type]}</RestrictionType>
+          <RestrictionComments>#{args[:restriction_comments]}</RestrictionComments>
+          <NonDeliveryOption>#{args[:non_delivery_option]}</NonDeliveryOption>
+          <EelPfc>#{args[:eel_pfc]}</EelPfc>
         </CustomsInfo>
         #{customs_info}
       </LabelRequest>!
